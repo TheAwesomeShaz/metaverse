@@ -24,12 +24,14 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
         joystick = FindObjectOfType<FloatingJoystick>();
     }
 
     // Update is called once per frame
     void Update()
     {
+
         RigidbodyMovement();
         if (joystick.Horizontal == 0 && joystick.Vertical == 0)
         {
@@ -59,6 +61,21 @@ public class PlayerMovement : MonoBehaviour
         print("Setting velocity thru joystick");
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Shop"))
+        {
+            UIManager.instance.EnableShowProducts();
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Shop"))
+        {
+            UIManager.instance.DisableShowProducts();
+        }
+    }
+
     public void SetMovement(String data)
     {
         FlutterUnityPlugin.Message message = FlutterUnityPlugin.Messages.Receive(data);
@@ -84,6 +101,7 @@ public class PlayerMovement : MonoBehaviour
 
         FlutterUnityPlugin.Messages.Send(message);
     }
+
 
     // public void SetRotationSpeed(string data)
     // {
